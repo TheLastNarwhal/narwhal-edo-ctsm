@@ -19,7 +19,7 @@ e2:SetType(EFFECT_TYPE_SINGLE)
 e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 e2:SetRange(LOCATION_MZONE)
 e3:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
-e3:SetValue(s.tgvalue)
+e3:SetValue(aux.indoval)
 c:RegisterEffect(e3)
 --self destroy
 local e4=Effect.CreateEffect(c)
