@@ -12,12 +12,13 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetValue(s.tgoval)
+	e1:SetCondition(s.condition)
+	e1:SetValue(aux.tgoval)
 	c:RegisterEffect(e1)
 	--Cannot be destroyed if field is Hamunaptra
 	local e2=e1:Clone()
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
-	e2:SetValue(s.indoval)
+	e2:SetValue(aux.indoval)
 	c:RegisterEffect(e2)
 	--banish monster in GY otherwise shuffle
 	local e3=Effect.CreateEffect(c)
@@ -34,14 +35,15 @@ function s.initial_effect(c)
 end
 --cannot be targeted or destroyed if field is Hamunaptra
 s.listed_names={99995597}
-function s.tgoval(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=e:GetHandlerPlayer()
-	and Duel.IsEnvironment(99995597,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsEnvironment(99995597,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
 end
-function s.indoval(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=e:GetHandlerPlayer()
-	and Duel.IsEnvironment(99995597,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
-end
+--function s.tgoval(e,tp,eg,ep,ev,re,r,rp)
+	--return tp~=e:GetHandlerPlayer() and Duel.IsEnvironment(99995597,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
+--end
+--function s.indoval(e,tp,eg,ep,ev,re,r,rp)
+	--return tp~=e:GetHandlerPlayer() and Duel.IsEnvironment(99995597,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
+--end
 --banish monster in GY otherwise shuffle
 function s.filter(c)
 	return c:IsAbleToRemove()
