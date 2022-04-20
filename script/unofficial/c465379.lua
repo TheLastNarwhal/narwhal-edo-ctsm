@@ -2,9 +2,19 @@
 --Scripted by Narwhal / Created by Lacooda
 local s,id=GetID()
 function s.initial_effect(c)
-  --Fusion material
   c:EnableReviveLimit()
-  Fusion.AddProcMixN(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0x196),2)
+  --Fusion material
+  Fusion.AddProcMixRep(c,true,true,aux.FilterBoolFunctionEx(Card.IsSetCard,0x196),2,99)
+  --Destroy cards on the field equal to the amount of materials used for Fusion Summon
+  local e0=Effect.CreateEffect(c)
+  e0:SetCategory(CATEGORY_DESTROY)
+  e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+  e0:SetProperty(EFFECT_FLAG_CARD_TARGET)
+  e0:SetCode(EVENT_SPSUMMON_SUCCESS)
+  e0:SetCondition(s.descon)
+  e0:SetTarget(s.destg)
+  e0:SetOperation(s.desop)
+  c:RegisterEffect(e0)
   --Unaffected by opponent's card effects during the BP
   local e1=Effect.CreateEffect(c)
   e1:SetType(EFFECT_TYPE_SINGLE)
@@ -28,6 +38,22 @@ function s.initial_effect(c)
   c:RegisterEffect(e3)
 end
 s.listed_series={0x196}
+--Destroy cards on the field equal to the amount of materials used for Fusion Summon
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return (e:GetHandler():GetSummonType()&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
+end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsOnField() and chkc:IsType(TYPE_SPELL+TYPE_TRAP+TYPE_MONSTER) end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsType,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil,TYPE_SPELL+TYPE_TRAP+TYPE_MONSTER) end
+	local ct=e:GetHandler():GetMaterialCount()
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp, Card.IsType,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,ct,nil,TYPE_SPELL+TYPE_TRAP+TYPE_MONSTER)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetTargetCards(e)
+	Duel.Destroy(g,REASON_EFFECT)
+end
 --Gains ATK equal to cards in opponent's hand
 function s.value(e,c)
   return Duel.GetFieldGroupCount(c:GetControler(),0,LOCATION_HAND)*200
