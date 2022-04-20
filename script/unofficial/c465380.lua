@@ -2,7 +2,7 @@
 --Scripted by Narwhal / Created by Lacooda
 local s,id=GetID()
 function s.initial_effect(c)
-  --Fusion 1 "Sirenity" fusion monster using monsters from hand or field as fusion materials
+  --Fusion Summon 1 "Sansirenity" fusion monster using monsters from hand or field as fusion materials, or deck if no attack
   local e1=Fusion.CreateSummonEff(c,aux.FilterBoolFunction(Card.IsSetCard,0x196),nil,s.fextra)
   c:RegisterEffect(e1)
   AshBlossomTable=AshBlossomTable or {}
