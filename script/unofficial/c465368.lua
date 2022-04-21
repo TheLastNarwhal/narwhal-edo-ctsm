@@ -43,7 +43,7 @@ end
 function s.damcon(e,tp,eg,ev,re,r,rp)
   local at=Duel.GetAttacker()
   local atg=Duel.GetAttackTarget()
-  return at:IsControler(1-tp) and atg:IsSetCard(0x196)
+  return Duel.GetBattleDamage(tp)>0 and ((a:IsControler(tp) and a:IsSetCart(0x196)) or (at and at:IsControler(tp) and at:IsSetCard(0x196)))
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
   Duel.ChangeBattleDamage(ep,ev/2)
