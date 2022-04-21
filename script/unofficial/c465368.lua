@@ -19,13 +19,13 @@ function s.initial_effect(c)
   c:RegisterEffect(e2)
   --Halve all battle damage you take involving Sirentiy monsters you control
   local e3=Effect.CreateEffect(c)
-  e3:SetType(EFFECT_TYPE_FIELD)
-  e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+  e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+  e3:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+  e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
   e3:SetRange(LOCATION_FZONE)
-  e3:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
   e3:SetTargetRange(LOCATION_MZONE,0)
-  e3:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x196))
-  e3:SetValue(HALF_DAMAGE)
+  e3:SetCondition(s.damcon)
+  e3:SetOperation(s.damop)
   c:RegisterEffect(e3)
 end
 s.listed_series={0x196}
@@ -38,4 +38,13 @@ function s.immutarget(e,c)
 end
 function s.immufilter(e,re)
   return re:GetOwnerPlayer()~=e:GetHandlerPlayer()
+end
+--Halve all battle damage you take involving Sirenity monsters you control
+function s.damcon(e,tp,eg,ev,re,r,rp)
+  local at=Duel.GetAttacker()
+  local atg=Duel.GetAttackTarget()
+  return at:IsControler(1-tp) and atg:IsSetCard(0x196)
+end
+function s.damop(e,tp,eg,ep,ev,re,r,rp)
+  Duel.ChangeBattleDamage(ep,ev/2)
 end
