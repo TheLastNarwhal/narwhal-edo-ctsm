@@ -41,8 +41,8 @@ function s.immufilter(e,re)
 end
 --Halve all battle damage you take involving Sirenity monsters you control
 function s.damcon(e,tp,eg,ev,re,r,rp)
-  local at=Duel.GetAttacker()
-  local atg=Duel.GetAttackTarget()
+  local a=Duel.GetAttacker()
+  local at=Duel.GetAttackTarget()
   return Duel.GetBattleDamage(tp)>0 and ((a:IsControler(tp) and a:IsSetCart(0x196)) or (at and at:IsControler(tp) and at:IsSetCard(0x196)))
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
