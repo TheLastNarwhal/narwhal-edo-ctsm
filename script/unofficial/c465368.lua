@@ -20,6 +20,7 @@ function s.initial_effect(c)
   --Halve all battle damage you take involving Sirentiy monsters you control
   local e3=Effect.CreateEffect(c)
   e3:SetType(EFFECT_TYPE_FIELD)
+  e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
   e3:SetRange(LOCATION_FZONE)
   e3:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
   e3:SetTargetRange(LOCATION_MZONE,0)
