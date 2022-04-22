@@ -21,7 +21,7 @@ e2:SetTarget(s.tdtg)
 e2:SetOperation(s.tdop)
 c:RegisterEffect(e2)
 end
-s.listed_names={30243636}
+s.listed_names={30243636,99995619}
 s.listed_series={0x195}
 s.counter_place_list={0x1042}
 --Allows use of opponent's monsters w/ counter
