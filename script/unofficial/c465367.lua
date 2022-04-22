@@ -42,7 +42,8 @@ function s.valcon(e,re,r,rp)
 end
 --During opponent's BP, set 1 normal trap and can activate
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-  return Duel.GetTurnPlayer()~=tp and Duel.GetCurrentPhase()==PHASE_BATTLE_STEP
+  local ph=Duel.GetCurrentPhase()
+  return Duel.GetTurnPlayer()~=tp and ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE
 end
 function s.setfilter(c)
   return c:GetType()==TYPE_TRAP and c:IsSSetable()
