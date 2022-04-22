@@ -64,7 +64,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 end
 --If your opponent Summons, Normal Summon 1 "Sirenity" monster
 function s.spcfilter(c,tp)
-  return c:IsAttackPos() and not c:IsSummonPlaer(tp)
+  return c:IsAttackPos() and not c:IsSummonPlayer(tp)
 end
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
   eg:IsExists(s.spcfilter,1,nil,tp)
