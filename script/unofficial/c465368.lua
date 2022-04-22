@@ -30,7 +30,7 @@ function s.initial_effect(c)
   --If your opponent Summons, Normal Summon 1 "Sirenity" monster
   local e4=Effect.CreateEffect(c)
   e4:SetCategory(CATEGORY_SUMMON)
-  e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+  e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
   e4:SetCode(EVENT_SPSUMMON_SUCCESS)
   e4:SetRange(LOCATION_FZONE)
   e4:SetCountLimit(1,id)
