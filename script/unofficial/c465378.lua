@@ -26,7 +26,7 @@ function s.initial_effect(c)
   --If battled, send top 5 cards of opponent's deck to GY, deal dam equal to sent monster
   local e4=Effect.CreateEffect(c)
   e4:SetCategory(CATEGORY_DECKDES+CATEGORY_DAMAGE)
-  e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+  e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
   e4:SetProperty(EFFECT_FLAG_DELAY)
   e4:SetCode(EVENT_BATTLED)
   e4:SetRange(LOCATION_MZONE)
