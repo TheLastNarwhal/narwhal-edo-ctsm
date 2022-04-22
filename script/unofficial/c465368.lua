@@ -67,7 +67,7 @@ function s.spcfilter(c,tp)
   return c:IsAttackPos() and not c:IsSummonPlayer(tp)
 end
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
-  eg:IsExists(s.spcfilter,1,nil,tp)
+  return eg:IsExists(s.spcfilter,1,nil,tp)
 end
 function s.sumfilter(c)
   return c:IsSetCard(0x196) and c:IsSummonable(true,nil)
