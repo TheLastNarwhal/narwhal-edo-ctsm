@@ -27,6 +27,20 @@ function s.initial_effect(c)
   e3:SetCondition(s.damcon)
   e3:SetOperation(s.damop)
   c:RegisterEffect(e3)
+  --If your opponent Summons, Normal Summon 1 "Sirenity" monster
+  local e4=Effect.CreateEffect(c)
+  e4:SetCategory(CATEGORY_SUMMON)
+  e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+  e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+  e4:SetRange(LOCATION_FZONE)
+  e4SetCountLimit(1,id)
+  e4:SetCondition(s.sumcon)
+  e4:SetTarget(s.sumtg)
+  e4:SetOperation(s.sumop)
+  c:RegisterEffect(e4)
+  local e5=e4:Clone()
+  e5:SetCode(EVENT_SUMMON_SUCCESS)
+  c:RegisterEffect(e5)
 end
 s.listed_series={0x196}
 --During MP1, Sirenity monsters you control are unaffected by opponent
@@ -47,4 +61,26 @@ function s.damcon(e,tp,eg,ev,re,r,rp)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
   Duel.ChangeBattleDamage(ep,ev/2)
+end
+--If your opponent Summons, Normal Summon 1 "Sirenity" monster
+function s.spcfilter(c,tp)
+  return c:IsAttackPos() and not c:IsSummonPlaer(tp)
+end
+function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
+  eg:IsExists(s.spcfilter,1,nil,tp)
+end
+function s.sumfilter(c)
+  return c:IsSetCard(0x196) and c:IsSummonable(true,nil)
+end
+function s.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
+  if chk==0 then return Duel.IsExistingMatchingCard(s.sumfilter,to,LOCATION_HAND,0,1,nil) end
+  Duel.SetOperationInfo(0,CATEGORY_SUMMON,nil,1,0,0)
+end
+function s.sumop(e,tp,eg,ep,ev,re,r,rp)
+  Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SUMMON)
+  local g=Duel.SelectMatchingCard(tp,s.sumfilter,tp,LOCATION_HAND,0,1,1,nil)
+  local tc=g:GetFirst()
+  if tc then
+    Duel.Summon(tp,tc,true,nil)
+  end
 end
