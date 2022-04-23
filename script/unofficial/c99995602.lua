@@ -26,7 +26,7 @@ e2:SetCountLimit(1,id)
 e2:SetTarget(s.sptg)
 e2:SetOperation(s.spop)
 c:RegisterEffect(e2)
---special sommon
+--special summon
 local e3=Effect.CreateEffect(c)
 e3:SetDescription(aux.Stringid(id,2))
 e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -56,8 +56,11 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetProperty(EFFECT_FLAG_COPY_INHERIT)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
-	e1:SetValue(100)
+	e1:SetValue(300)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	c:RegisterEffect(e2)
 end
 --token creation
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
