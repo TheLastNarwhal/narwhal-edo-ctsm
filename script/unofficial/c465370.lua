@@ -9,7 +9,7 @@ function s.initial_effect(c)
   e1:SetCode(EVENT_FREE_CHAIN)
   e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
   e1:SetHintTiming(0,TIMING_END_PHASE)
-  e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
+  e1:SetCountLimit(1)
   e1:SetCondition(s.condition)
   e1:SetTarget(s.sptg)
   e1:SetOperation(s.spop)
@@ -22,7 +22,7 @@ function s.initial_effect(c)
   e2:SetCategory(CATEGORY_POSITION)
   e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
   e2:SetHintTiming(0,TIMING_END_PHASE)
-  e2:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
+  e2:SetCountLimit(1)
   e2:SetCondition(s.condition)
   e2:SetTarget(s.postg)
   e2:SetOperation(s.posop)
@@ -36,14 +36,14 @@ end
 function s.condition(e,c)
   local c=e:GetHandler()
   if c==nil then return true end
-  return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.IsExistingMatchingCard(s.posfilter,c:GetControler(),LOCATION_MZONE,0,1,nil)
+  return Duel.IsExistingMatchingCard(s.posfilter,c:GetControler(),LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)>0 end
+  if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)>0 and Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp)>=1 end
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
-  if #g>0 and Duel.GetLocationCount(1-tp,0,LOCATION_MZONE,tp)>0 then
+  if #g>0 then
     Duel.ConfirmCards(tp,g)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_OPPO)
     local tg=g:FilterSelect(tp,Card.IsType,1,1,nil,TYPE_MONSTER)
