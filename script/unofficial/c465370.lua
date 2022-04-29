@@ -43,7 +43,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
-  if #g>0 and Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp)>0 then
+  if #g>0 and Duel.GetLocationCount(tp,0,LOCATION_MZONE,tp)>0 then
     Duel.ConfirmCards(tp,g)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_OPPO)
     local tg=g:FilterSelect(tp,Card.IsType,1,1,nil,TYPE_MONSTER)
