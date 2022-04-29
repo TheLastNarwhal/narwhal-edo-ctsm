@@ -39,7 +39,7 @@ function s.condition(e,c)
   return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and Duel.IsExistingMatchingCard(s.posfilter,c:GetControler(),LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-  if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_HAND)>0 end
+  if chk==0 then return Duel.GetFieldGroupCount(1-tp,0,LOCATION_HAND)>0 end
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
   local g=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
