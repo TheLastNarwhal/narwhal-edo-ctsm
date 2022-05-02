@@ -24,7 +24,7 @@ function s.initial_effect(c)
   e1:SetTarget(s.sstg)
   e1:SetOperation(s.ssop)
   c:RegisterEffect(e1)
-  --Prevent destruction by battle
+  --Prevent destruction by effects
   local e2=Effect.CreateEffect(c)
   e2:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
   e2:SetCode(EFFECT_DESTROY_REPLACE)
@@ -34,7 +34,7 @@ function s.initial_effect(c)
   e2:SetOperation(s.repop)
   c:RegisterEffect(e2)
 end
-s.listed_names={66947414,975299}
+s.listed_names={66947414,975299,66947414}
 s.listed_series={0x15}
 --Add card to hand
 function s.thfilter(c)
@@ -74,7 +74,7 @@ function s.ssop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Prevent destruction by opponent's effects
 function s.repfilter(c,tp)
-	return c:IsFaceup() and c:IsControler(tp) and (c:IsSetCard(0x15) or c:IsCode(975299)) and c:IsReason(REASON_EFFECT) and not c:IsReason(REASON_REPLACE) and c:GetReasonPlayer()==1-tp
+	return c:IsFaceup() and c:IsControler(tp) and (c:IsSetCard(0x15) or c:IsCode(975299) or c:IsCode(66947414) and c:IsReason(REASON_EFFECT) and not c:IsReason(REASON_REPLACE) and c:GetReasonPlayer()==1-tp
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) end
