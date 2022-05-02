@@ -74,7 +74,7 @@ function s.ssop(e,tp,eg,ep,ev,re,r,rp)
 end
 --Prevent destruction by opponent's effects
 function s.repfilter(c,tp)
-	return c:IsFaceup() and c:IsControler(tp) and (c:IsSetCard(0x15) or c:IsCode(975299) or c:IsCode(66947414) and c:IsReason(REASON_EFFECT) and not c:IsReason(REASON_REPLACE) and c:GetReasonPlayer()==1-tp
+	return c:IsFaceup() and c:IsControler(tp) and (c:IsSetCard(0x15) or c:IsCode(975299) or c:IsCode(66947414)) and c:IsReason(REASON_EFFECT) and not c:IsReason(REASON_REPLACE) and c:GetReasonPlayer()==1-tp
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) end
