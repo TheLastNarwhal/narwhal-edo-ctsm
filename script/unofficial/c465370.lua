@@ -55,6 +55,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
       Duel.ShuffleHand(1-tp)
     end
     Duel.SpecialSummonComplete()
+    else
+    Duel.ShuffleHand(1-tp)
   end
 end
 --Activation - Change battle position of def monster opponent controls
