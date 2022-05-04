@@ -2,6 +2,7 @@
 --Scripted by Narwhal
 local s,id=GetID()
 function s.initial_effect(c)
+	c:SetSPSummonOnce(id)
 	c:EnableReviveLimit()
 	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.HasLevel),nil,2,nil,nil,99,s.xyzfilter)
   --Must first be Xyz Summoned
