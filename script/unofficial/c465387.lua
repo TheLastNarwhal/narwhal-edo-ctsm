@@ -70,7 +70,7 @@ s.listed_series={0x197,0x2197}
 s.listed_names={465386,465388}
 --On Summon add "Witch" monster from Deck to hand
 function s.thfilter(c)
-  return c:IsSetCard(0x197) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+  return c:IsSetCard(0x197) and not c:IsCode(id) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
   if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
