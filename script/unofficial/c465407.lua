@@ -60,7 +60,7 @@ end
 function s.checkbanisheffect(e,tp,eg,ep,ev,re,r,rp)
   --Debug.Message("[current banishflag value] is "..tostring(Duel.GetFlagEffect(tp,id)))
   local rc=re:GetHandler()
-  if rc and ((r&REASON_EFFECT)~=0) then
+  if rc:IsCode(id) and ((r&REASON_EFFECT)~=0) then
     Duel.RegisterFlagEffect(0,id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,2)
     --Debug.Message("[set banishflag value] is "..tostring(Duel.GetFlagEffect(tp,id)))
   end
