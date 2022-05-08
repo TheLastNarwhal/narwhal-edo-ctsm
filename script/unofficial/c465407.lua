@@ -52,7 +52,7 @@ function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
   local cur=Duel.GetCurrentPhase()
-  Debug.Message("[current phase is] is "..tostring(cur))
+  --Debug.Message("[current phase is] is "..tostring(cur))
 --[[if cur==PHASE_DRAW then
     e:SetLabel(2)
   end
@@ -87,7 +87,7 @@ function s.rmop(e,tp,eg,ep,ev,re,r,rp)
   if tc and tc:IsRelateToEffect(e) then
     if Duel.Remove(tc,POS_FACEUP,REASON_EFFECT+REASON_TEMPORARY)~=0 then
       e:SetLabelObject(tc)
-      Debug.Message("[phase is set to] is "..tostring(e:GetLabel()))
+      --Debug.Message("[phase is set to] is "..tostring(e:GetLabel()))
       local e1=Effect.CreateEffect(e:GetHandler())
       e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
       e1:SetCode(EVENT_PHASE+e:GetLabel())
