@@ -125,7 +125,7 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chk==0 then return ct>0 and Duel.IsCanRemoveCounter(tp,LOCATION_MZONE,0,0x1f,1,REASON_COST)
   end
   local cc=Duel.GetCounter(tp,LOCATION_MZONE,0,0x1f)
-  local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_ONFIELD,1,cc,nil)
+  local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_ONFIELD,1,5,nil)
   Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,cc,0,0)
   Duel.RemoveCounter(tp,LOCATION_MZONE,0,0x1f,#g,REASON_COST)
 end
