@@ -36,7 +36,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()
-        local code=tc:GetOriginalCodeRule()
+        local code=tc:GetCode()
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
