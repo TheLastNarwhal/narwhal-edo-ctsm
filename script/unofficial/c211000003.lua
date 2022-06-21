@@ -24,7 +24,7 @@ function s.initial_effect(c)
 end
 --Copy opponent's monster
 function s.filter(c,e,tp)
-    return c:IsFaceup() and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,c:GetAttack(),c:GetDefense(),1,RACE_AQUA,ATTRIBUTE_WATER)
+    return c:IsFaceup() and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,c:GetTextAttack(),c:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc,e,tp) end
@@ -38,24 +38,25 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     local c=e:GetHandler()
     if not c:IsRelateToEffect(e) or not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
-    if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,tc:GetAttack(),tc:GetDefense(),1,RACE_AQUA,ATTRIBUTE_WATER) then return end
-    c:AddMonsterAttribute(TYPE_MONSTER+TYPE_SPELL+TYPE_EFFECT)
+    if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,tc:GetTextAttack(),tc:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER) then return end
+    c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()
+        local code=tc:GetOriginalCodeRule()
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
         e1:SetReset(RESET_EVENT+RESETS_STANDARD)
         e1:SetCode(EFFECT_CHANGE_CODE)
-        e1:SetValue(tc:GetCode())
+        e1:SetValue(code)
         c:RegisterEffect(e1)
         local e2=e1:Clone()
         e2:SetCode(EFFECT_SET_BASE_DEFENSE)
-        e2:SetValue(tc:GetDefense())
+        e2:SetValue(tc:GetTextDefense())
         c:RegisterEffect(e2)
         local e3=e1:Clone()
         e3:SetCode(EFFECT_SET_BASE_ATTACK)
-        e3:SetValue(tc:GetAttack())
+        e3:SetValue(tc:GetTextAttack())
         c:RegisterEffect(e3)
         local e4=e1:Clone()
         e4:SetCode(EFFECT_CHANGE_RACE)
@@ -69,7 +70,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         e6:SetCode(EFFECT_CHANGE_LEVEL)
         e6:SetValue(1)
         c:RegisterEffect(e6)
-        c:CopyEffect(tc:GetOriginalCode(),RESET_EVENT+RESETS_STANDARD,1)
+        c:CopyEffect(code,RESET_EVENT+RESETS_STANDARD,1)
         c:SetCardTarget(tc)
     end
     Duel.SpecialSummonComplete()

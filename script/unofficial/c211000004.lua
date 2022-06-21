@@ -2,6 +2,8 @@
 --Scripted by Narwhal
 local s,id=GetID()
 function s.initial_effect(c)
+    --List of counters to better enable copy effects
+    c:EnableCounterPermit(COUNTER_SPELL)
     --Add "Sakashima" card from Deck to hand, then Special Summon
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,0))
@@ -24,6 +26,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x199}
 s.listed_names={id}
+s.counter_place_list={COUNTER_SPELL}
 --Add "Sakashima" card from Deck to hand, then Special Summon
 function s.filter(c)
     return c:IsSetCard(0x199) and not c:IsCode(id) and c:IsAbleToHand()
@@ -44,7 +47,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
     Duel.BreakEffect()
     local c=e:GetHandler()
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) then return end
-    c:AddMonsterAttribute(TYPE_MONSTER+TYPE_SPELL+TYPE_EFFECT)
+    c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()
         local e1=Effect.CreateEffect(c)
@@ -61,6 +64,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
     end
     Duel.SpecialSummonComplete()
 end
+--When Special Summoned, target 1 monster and copy
 function s.cpfilter(c)
     return c:IsFaceup() and not c:IsCode(id)
 end
@@ -72,21 +76,22 @@ function s.cpop(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     local c=e:GetHandler()
     if not c:IsRelateToEffect(e) or not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
+    local code=tc:GetOriginalCodeRule()
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE)
     e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
     e1:SetReset(RESET_EVENT+RESETS_STANDARD)
     e1:SetCode(EFFECT_CHANGE_CODE)
-    e1:SetValue(tc:GetCode())
+    e1:SetValue(code)
     c:RegisterEffect(e1)
     local e2=e1:Clone()
     e2:SetCode(EFFECT_SET_BASE_DEFENSE)
-    e2:SetValue(tc:GetDefense())
+    e2:SetValue(tc:GetTextDefense())
     c:RegisterEffect(e2)
     local e3=e1:Clone()
     e3:SetCode(EFFECT_SET_BASE_ATTACK)
-    e3:SetValue(tc:GetAttack())
+    e3:SetValue(tc:GetTextAttack())
     c:RegisterEffect(e3)
-    c:CopyEffect(tc:GetOriginalCode(),RESET_EVENT+RESETS_STANDARD,1)
+    c:CopyEffect(code,RESET_EVENT+RESETS_STANDARD,1)
     c:SetCardTarget(tc)
 end
