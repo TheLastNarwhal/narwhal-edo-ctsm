@@ -10,30 +10,9 @@ function s.initial_effect(c)
     e1:SetCode(EVENT_FREE_CHAIN)
     e1:SetCountLimit(1,id)
     e1:SetCondition(s.condition)
-    e1:SetCost(s.cost)
     e1:SetTarget(s.target)
     e1:SetOperation(s.activate)
     c:RegisterEffect(e1)
-end
---"Cost" to activate
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetActivityCount(tp,ACTIVITY_SUMMON)==0 and Duel.GetActivityCount(tp,ACTIVITY_SPSUMMON)==0 end
-    local e1=Effect.CreateEffect(e:GetHandler())
-    e1:SetType(EFFECT_TYPE_FIELD)
-    e1:SetCode(EFFECT_CANNOT_SUMMON)
-    e1:SetDescription(aux.Stringid(id,0))
-    e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH+EFFECT_FLAG_CLIENT_HINT)
-    e1:SetTargetRange(1,0)
-    e1:SetReset(RESET_PHASE+PHASE_END)
-    Duel.RegisterEffect(e1,tp)
-    local e2=e1:Clone()
-    e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-    e2:SetLabelObject(e)
-    e2:SetTarget(s.splimit)
-    Duel.RegisterEffect(e2,tp)
-end
-function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-    return se~=e:GetLabelObject()
 end
 --Return 2 of your banished cards to hand
 function s.cfilter(c)
