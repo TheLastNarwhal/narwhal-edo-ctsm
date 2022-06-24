@@ -70,7 +70,7 @@ function s.copycost(e,tp,eg,ep,ev,re,r,rp,chk)
     e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 end
 function s.copyfilter(c)
-    return not c:IsCode(id)
+    return c:IsFaceup() not c:IsCode(id)
 end
 function s.copytg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsControler(1-tp|tp) and chkc:IsLocation(LOCATION_MZONE) and s.copyfilter(chkc) end
