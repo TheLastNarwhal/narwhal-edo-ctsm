@@ -120,9 +120,8 @@ end
 --Equipped to a monster you control
 --If equipped monster would be destroyed by battle or card effect, destroy this card instead
 function s.repval(e,re,r,rp)
-    if e:SetLabel(66) then
-        return (r&REASON_BATTLE)~=0 or (r&REASON_EFFECT)~=0
-    end
+    e:SetLabel(66)
+    return (r&REASON_BATTLE)~=0 or (r&REASON_EFFECT)~=0
 end
 --Equipped to a monster your opponent controls:
 --Loses 500 ATK equal to the amount of Spell monsters on your field
