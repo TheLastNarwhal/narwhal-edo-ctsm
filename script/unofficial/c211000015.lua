@@ -1,18 +1,8 @@
 --Ehir the Omen-Speaker Eternal
 --Scripted by Narwhal
+Duel.LoadScript("cstm_card_specific_functions.lua")
 local s,id=GetID()
 function s.initial_effect(c)
-    --Special Summon self and token
-    local e1=Effect.CreateEffect(c)
-    e1:SetDescription(aux.Stringid(id,0))
-    e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-    e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetRange(LOCATION_HAND)
-    e1:SetCountLimit(1,id)
-    e1:SetCost(s.spcost)
-    e1:SetTarget(s.sptg)
-    e1:SetOperation(s.spop)
-    c:RegisterEffect(e1)
     --If leaves field, look at top card of Deck, send to bottom or add to hand
     local e2=Effect.CreateEffect(c)
     e2:SetDescription(aux.Stringid(id,2))
@@ -23,26 +13,19 @@ function s.initial_effect(c)
     e2:SetTarget(s.peektg)
     e2:SetOperation(s.peekop)
     c:RegisterEffect(e2)
+    --Special Summon self and token
+    c:RegisterEffect(Effect.CreateEternalSPEffect(c,id,0,CATEGORY_TOKEN,s.sptg,s.spop))
 end
 s.listed_series={0x200}
 --Special Summon self and token
-function s.spcostfilter(c)
-    return c:IsSetCard(0x200) and c:IsAbleToRemoveAsCost()
-end
-function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.spcostfilter,tp,LOCATION_HAND+LOCATION_ONFIELD,0,1,e:GetHandler()) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-    local g=Duel.SelectMatchingCard(tp,s.spcostfilter,tp,LOCATION_HAND+LOCATION_ONFIELD,0,1,1,e:GetHandler())
-    Duel.Remove(g,POS_FACEUP,REASON_COST)
-end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
-    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
+    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0x200,TYPES_TOKEN+TYPE_TUNER,0,0,4,RACE_FAIRY,ATTRIBUTE_LIGHT) end
+    Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP)>0 
-    and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+    if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
     and Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0x200,TYPES_TOKEN+TYPE_TUNER,0,0,4,RACE_FAIRY,ATTRIBUTE_LIGHT) 
     and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
         Duel.BreakEffect()
