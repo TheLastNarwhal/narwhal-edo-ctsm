@@ -1,6 +1,6 @@
 --Lawstones of the Eternal Realm
 --Scripted by Narwhal
-Duel.LoadScript("cstm_card_specific_functions.lua"
+Duel.LoadScript("cstm_card_specific_functions.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     --Activation
