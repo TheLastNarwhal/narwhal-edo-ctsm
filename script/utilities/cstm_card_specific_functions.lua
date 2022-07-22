@@ -1,11 +1,14 @@
---Commonly used cards' constants
-CARD_LAWSTONES_ETERNAL_REALM       = 211000027
+--Custom card constants
+CARD_LAWSTONES_ETERNAL_REALM  = 211000027
+
+--Custom Tokens constants
+TOKEN_ETERNAL_SHARD           = 211000020
 
 --[[
     Effect.CreateEternalSPEffect(c,id,desc,uniquecat,uniquetg,uniqueop)
 
     Creates an Ignition Effect object for the "Eternal" effects that banish 1 other "Eternal" card from the hand or field.
-    Includes handling for "TBN" cost replacement.
+    Includes handling for "CARD_LAWSTONES_ETERNAL_REALM" cost replacement.
 
     Card c: the owner of the Effect.
     int id: the card ID used for the HOPT restriction and strings.
@@ -35,7 +38,7 @@ Effect.CreateEternalSPEffect=(function()
     end
 
     local function eternalop(uniqueop,e,tp,eg,ep,ev,re,r,rp)
-        if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.SpecialSummon(e:GetHandler(),1,tp,tp,false,false,POS_FACEUP) then
+        if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) and e:GetHandler():RegisterFlagEffect(e:GetHandler():GetCode(),RESET_PHASE+PHASE_END,0,1) and Duel.SpecialSummon(e:GetHandler(),1,tp,tp,false,false,POS_FACEUP) then
             uniqueop(e,tp,eg,ep,ev,re,r,rp)
         end
     end
