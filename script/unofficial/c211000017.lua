@@ -58,7 +58,7 @@ end
 function s.eqfilter(c,ec)
     return c:IsFaceup() and ec:CheckEquipTarget(c)
 end
-function s.eqfilter(c)
+function s.eqfilter2(c)
     return c:IsFaceup() and c:IsType(TYPE_MONSTER)
 end
 --Temporarily banish any number of cards you control
@@ -70,13 +70,15 @@ function s.tmpbanop(e,tp,eg,ep,ev,re,r,rp,chk)
         if Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
             Duel.BreakEffect()
             for tc in g:Iter() do
-                e:SetLabelObject(rc)
+                --e:SetLabelObject(rc)
                 if tc:IsType(TYPE_FIELD) and tc:IsPreviousPosition(POS_FACEDOWN) then
                     e:SetLabel(20)
                 elseif tc:IsType(TYPE_FIELD) and tc:IsPreviousPosition(POS_FACEUP) then
                     e:SetLabel(21)
                 elseif tc:IsType(TYPE_EQUIP) and tc:IsPreviousPosition(POS_FACEUP) then
                     e:SetLabel(11)
+                elseif tc:IsType(TYPE_MONSTER) and tc:IsPreviousLocation(LOCATION_SZONE) then
+                    e:SetLabel(30)
                     if not tc:IsImmuneToEffect(e) then
                         tc:ResetEffect(EFFECT_SET_CONTROL,RESET_CODE)
                         local e1=Effect.CreateEffect(e:GetHandler())
@@ -87,20 +89,22 @@ function s.tmpbanop(e,tp,eg,ep,ev,re,r,rp,chk)
                         tc:RegisterEffect(e1)
                     end
                 end
-                --This is to ensure that Field/Equip cards return "properly"
+                --This is to ensure that Field/Equip/Equip-Monster cards return "properly"
                 local pos=e:GetLabel()
                 if tc:IsType(TYPE_FIELD) and pos==20 then
                     Duel.MoveToField(tc,tp,tp,LOCATION_FZONE,POS_FACEDOWN,false)
                 elseif tc:IsType(TYPE_FIELD) and pos==21 then
                     Duel.MoveToField(tc,tp,tp,LOCATION_FZONE,POS_FACEUP,true)
-                elseif tc:IsType(TYPE_EQUIP) and pos==11 and not Duel.IsExistingMatchingCard(s.eqfilter2,tp,LOCATION_MZONE,0,1,nil) then
+                elseif tc:IsType(TYPE_EQUIP) and pos==11 and not Duel.IsExistingMatchingCard(s.eqfilter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) then
                     Duel.SendtoGrave(tc,REASON_RULE,tp)
                 elseif tc:IsType(TYPE_EQUIP) and pos==11 then
                     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-                    local ec=Duel.SelectMatchingCard(tp,s.eqfilter,tp,LOCATION_MZONE,0,1,1,nil,tc):GetFirst()
+                    local ec=Duel.SelectMatchingCard(tp,s.eqfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,tc):GetFirst()
                     Duel.HintSelection(ec,true)
                     if not ec then return end
                     Duel.Equip(tp,tc,ec)
+                elseif tc:IsType(TYPE_MONSTER) and pos==30 then
+                    Duel.MoveToField(tc,tp,tp,LOCATION_MZONE,POS_FACEUP,true)
                 else
                     Duel.ReturnToField(tc)
                 end
