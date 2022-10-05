@@ -53,8 +53,14 @@ function s.initial_effect(c)
     e4:SetTarget(s.reptg)
     e4:SetOperation(s.repop)
     c:RegisterEffect(e4)
+    --Searches for "Danger Dungeon!" monster activation in GY
+    Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter)
 end
 s.listed_series={SET_DANGER_DUNGEON}
+--Searches for "Danger Dungeon!" monster activation in hand
+function s.chainfilter(re,tp,cid)
+    return not (re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsSetCard(SET_DANGER_DUNGEON) and (Duel.GetChainInfo(cid,CHAININFO_TRIGGERING_LOCATION)==LOCATION_GRAVE))
+end
 --Alternative Special Summon procedure
 function s.spfilter(c)
     return c:IsSetCard(SET_DANGER_DUNGEON) and c:IsMonster() and c:IsAbleToRemoveAsCost()
@@ -71,7 +77,7 @@ function s.hspcon(e,c)
     local g2=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,tp)
     local g=g1:Clone()
     g:Merge(g2)
-    return #g1>0 and #g2>0 and aux.SelectUnselectGroup(g,e,tp,3,3,s.rescon,0)
+    return #g1>0 and #g2>0 and (Duel.GetCustomActivityCount(id,tp,ACTIVITY_CHAIN)~=0 or Duel.GetCustomActivityCount(id,1-tp,ACTIVITY_CHAIN)~=0) and aux.SelectUnselectGroup(g,e,tp,3,3,s.rescon,0)
 end
 function s.hsptg(e,tp,eg,ep,ev,re,r,rp,chk,c)
     local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND|LOCATION_DECK,0,nil)
