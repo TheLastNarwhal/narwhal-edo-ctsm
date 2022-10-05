@@ -1,8 +1,18 @@
---Custom card constants
+--Custom Card Constants
 CARD_LAWSTONES_ETERNAL_REALM  = 211000027
 
---Custom Tokens constants
+--Custom Tokens Constants
 TOKEN_ETERNAL_SHARD           = 211000020
+
+--Custom Counters
+COUNTER_LOYALTY               = 0xa61
+COUNTER_PHEAROIL              = 0x1224
+COUNTER_ABSORB                = 0xddac
+
+--Custom Archetypes
+SET_DANGER_DUNGEON            = 0xdd3
+SET_DANGER_DUNGEON_TREASURE   = 0x1dd3
+SET_DANGER_DUNGEON_ALARM      = 0x2dd3
 
 --[[
     Effect.CreateEternalSPEffect(c,id,desc,uniquecat,uniquetg,uniqueop)
@@ -34,7 +44,7 @@ Effect.CreateEternalSPEffect=(function()
     end
 
     function eternalspfilter(c,e,tp)
-        return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:Iscode(id)
+        return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsCode(id)
     end
 
     local function eternalop(uniqueop,e,tp,eg,ep,ev,re,r,rp)
