@@ -29,7 +29,7 @@ s.listed_series={SET_DANGER_DUNGEON}
 --Negate the effects of 1 face-up card your opponent controls, Special Summon this card
 function s.sphtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsOnField() and chkc:IsNegatable() end
-    if chk==0 then return Duel.IsExistingTarget(Card.IsNegatable,tp,0,LOCATION_ONFIELD,1,nil) and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
+    if chk==0 then return Duel.IsExistingTarget(Card.IsNegatable,tp,0,LOCATION_ONFIELD,1,nil) and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_NEGATE)
     local g=Duel.SelectTarget(tp,Card.IsNegatable,tp,0,LOCATION_ONFIELD,1,1,nil)
     Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,0,0)
@@ -53,9 +53,9 @@ function s.sphop(e,tp,eg,ep,ev,re,r,rp)
             e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
             tc:RegisterEffect(e3)
         end
-    end
-    if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsRelateToEffect(e) then
-        Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
+    if tc:IsImmuneToEffect(e1) or tc:IsImmuneToEffect(e2) or not c:IsRelateToEffect(e) or Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
+    Duel.AdjustInstantly(tc)
+    Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
     end
     --Prevent non-Archetype Summons from ED 'til end of turn
     local e1=Effect.CreateEffect(c)
