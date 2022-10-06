@@ -4,6 +4,8 @@ Duel.LoadScript("cstm_card_specific_functions.lua")
 local s,id=GetID()
 function s.initial_effect(c)
     c:EnableReviveLimit()
+    --Can only Special Summon once per turn
+    c:SetSPSummonOnce(id)
     --Fusion Summon
     Fusion.AddProcMixRep(c,false,false,aux.FilterBoolFunctionEx(Card.IsSetCard,SET_DANGER_DUNGEON),2,99)
     --Alternative Special Summon procedure
