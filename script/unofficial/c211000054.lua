@@ -68,15 +68,6 @@ function s.initial_effect(c)
     e5:SetRange(LOCATION_MZONE)
     e5:SetValue(s.aktfieldval)
     c:RegisterEffect(e5)
-    --Destruction Replacement
-    local e6=Effect.CreateEffect(c)
-	e6:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
-	e6:SetCode(EFFECT_DESTROY_REPLACE)
-	e6:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e6:SetRange(LOCATION_SZONE+LOCATION_MZONE)
-	e6:SetTarget(s.desreptg)
-	e6:SetOperation(s.desrepop)
-	c:RegisterEffect(e6)
     --Searches for "Danger Dungeon!" monster activation in hand
     Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter)
 end
@@ -195,12 +186,4 @@ end
 --Value for updating ATK
 function s.aktfieldval(e,c)
     return e:GetHandler():GetCounter(COUNTER_ABSORB)*300
-end
---Destruction Replacement
-function s.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return not e:GetHandler():IsReason(REASON_RULE) and e:GetHandler():GetCounter(COUNTER_ABSORB)>0 end
-    return Duel.SelectEffectYesNo(tp,e:GetHandler(),96)
-end
-function s.desrepop(e,tp,eg,ep,ev,re,r,rp)
-    e:GetHandler():RemoveCounter(ep,COUNTER_ABSORB,3,REASON_EFFECT)
 end

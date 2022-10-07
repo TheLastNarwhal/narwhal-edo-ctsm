@@ -8,16 +8,6 @@ function s.initial_effect(c)
     c:SetSPSummonOnce(id)
     --Fusion Summon
     Fusion.AddProcMixRep(c,false,false,aux.FilterBoolFunctionEx(Card.IsSetCard,SET_DANGER_DUNGEON),2,99)
-    --Alternative Special Summon procedure
-    local e0=Effect.CreateEffect(c)
-    e0:SetType(EFFECT_TYPE_FIELD)
-    e0:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-    e0:SetCode(EFFECT_SPSUMMON_PROC)
-    e0:SetRange(LOCATION_EXTRA)
-    e0:SetCondition(s.hspcon)
-    e0:SetTarget(s.hsptg)
-    e0:SetOperation(s.hspop)
-    c:RegisterEffect(e0)
     --Gains ATK equal to amount of materials used for Fusion Summon * 1000
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -46,7 +36,6 @@ function s.initial_effect(c)
     e3:SetTarget(s.negtg)
     e3:SetOperation(s.negop)
     c:RegisterEffect(e3)
-    aux.AddEREquipLimit(c,nil,s.eqval,s.equipop,e3)
     --Destroy replace
     local e4=Effect.CreateEffect(c)
     e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -56,49 +45,8 @@ function s.initial_effect(c)
     e4:SetTarget(s.reptg)
     e4:SetOperation(s.repop)
     c:RegisterEffect(e4)
-    --Searches for "Danger Dungeon!" monster activation in GY
-    Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,s.chainfilter)
 end
 s.listed_series={SET_DANGER_DUNGEON}
---Searches for "Danger Dungeon!" monster activation in hand
-function s.chainfilter(re,tp,cid)
-    return not (re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsSetCard(SET_DANGER_DUNGEON) and (Duel.GetChainInfo(cid,CHAININFO_TRIGGERING_LOCATION)==LOCATION_GRAVE))
-end
---Alternative Special Summon procedure
-function s.spfilter(c)
-    return c:IsSetCard(SET_DANGER_DUNGEON) and c:IsMonster() and c:IsAbleToRemoveAsCost()
-end
-function s.rescon(sg,e,tp,mg)
-    return Duel.GetLocationCountFromEx(tp,tp,sg,e:GetHandler())>0 
-        and sg:IsExists(Card.IsLocation,1,nil,LOCATION_HAND)
-        and sg:IsExists(Card.IsLocation,1,nil,LOCATION_DECK)
-end
-function s.hspcon(e,c)
-    if c==nil then return true end
-    local tp=c:GetControler()
-    local g1=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND,0,nil,tp)
-    local g2=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,tp)
-    local g=g1:Clone()
-    g:Merge(g2)
-    return #g1>0 and #g2>0 and (Duel.GetCustomActivityCount(id,tp,ACTIVITY_CHAIN)~=0 or Duel.GetCustomActivityCount(id,1-tp,ACTIVITY_CHAIN)~=0) and aux.SelectUnselectGroup(g,e,tp,3,3,s.rescon,0)
-end
-function s.hsptg(e,tp,eg,ep,ev,re,r,rp,chk,c)
-    local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND|LOCATION_DECK,0,nil)
-    local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_REMOVE,nil,nil,true)
-    if #sg > 0 then
-        sg:KeepAlive()
-        e:SetLabelObject(sg)
-        return true
-    else
-        return false
-    end
-end
-function s.hspop(e,tp,eg,ep,ev,re,r,rp,c)
-    local sg=e:GetLabelObject()
-    Duel.Remove(sg,POS_FACEUP,REASON_COST)
-    c:SetMaterial(sg)
-    sg:DeleteGroup()
-end
 --Gains ATK equal to amount of materials used for Fusion Summon * 1000
 function s.matcheck(e,c)
     e:GetLabelObject():SetLabel(c:GetMaterialCount())
@@ -133,28 +81,22 @@ function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
-    --if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
     if chk==0 then return true end
     Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
     if re:GetHandler():IsRelateToEffect(re) then
-        Duel.SetOperationInfo(0,CATEGORY_EQUIP,eg,1,0,0)
+        Duel.SetOperationInfo(0,CATEGORY_DISABLE,eg,1,0,0)
     end
-end
-function s.eqval(ec,c,tp)
-    return ec:IsControler(1-tp)
-end
-function s.equipop(c,e,tp,rc)
-    c:EquipByEffectAndLimitRegister(e,tp,rc,id)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     local rc=re:GetHandler()
     if Duel.NegateActivation(ev) and c:IsRelateToEffect(e) and rc:IsRelateToEffect(re) then
-        rc:CancelToGrave()
-        --[[doesn't work with non-monsters, so... did the funny of using Overlay and I think it's more fitting
-        --
-        s.equipop(c,e,tp,rc)]]
-        Duel.Overlay(c,rc)
+        if rc:IsLocation(LOCATION_GRAVE|LOCATION_REMOVED) then
+            Duel.Overlay(c,rc)
+        else
+            rc:CancelToGrave()
+            Duel.Overlay(c,rc)
+        end
     end
 end
 --Destroy replace
