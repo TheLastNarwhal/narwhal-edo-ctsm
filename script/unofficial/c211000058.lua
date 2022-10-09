@@ -78,7 +78,7 @@ end
 function s.d20op(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     local d20=Duel.GetRandomNumber(1,20)
-    Debug.ShowHint("Your d20 roll is "..tostring(d20)..".")
+    Debug.Message("Your d20 roll is "..tostring(d20)..".")
     --On roll of 1: Banish all cards on your field face-down, then end turn
     if d20==1 then
         local rg=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,LOCATION_ONFIELD,0,nil)
