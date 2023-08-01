@@ -135,12 +135,12 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 end
 --Checking for activation legality
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) end
+    if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) then return end
+    if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) then return end
     c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()

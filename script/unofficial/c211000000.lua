@@ -17,10 +17,10 @@ end
   e1:SetCountLimit(1,id)
   c:RegisterEffect(e1)
 end
-s.listed_series={0x199}
+s.listed_series={0x1990}
 --Copy opponent's monster
 function s.filter(c,e,tp)
-  return c:IsFaceup() and c:GetLevel()>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,c:GetAttack(),c:GetDefense(),c:GetLevel(),c:GetRace(),c:GetAttribute())
+  return c:IsFaceup() and c:GetLevel()>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,c:GetAttack(),c:GetDefense(),c:GetLevel(),c:GetRace(),c:GetAttribute())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
   if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc,e,tp) end
@@ -34,7 +34,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
   local tc=Duel.GetFirstTarget()
   local c=e:GetHandler()
   if not c:IsRelateToEffect(e) or not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
-  if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,tc:GetAttack(),tc:GetDefense(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end
+  if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,tc:GetAttack(),tc:GetDefense(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then return end
   c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
   if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
     c:AddMonsterAttributeComplete()

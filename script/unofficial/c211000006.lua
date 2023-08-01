@@ -27,10 +27,10 @@ function s.initial_effect(c)
     e2:SetOperation(s.repop)
     c:RegisterEffect(e2)
 end
-s.listed_series={0x199}
+s.listed_series={0x1990}
 --Material filter for Link Summon
 function s.matfilter(c,scard,sumtype,tp)
-    return c:IsType(TYPE_SPELL) and c:IsSetCard(0x199)
+    return c:IsType(TYPE_SPELL) and c:IsSetCard(0x1990)
 end
 --Add Field Spell from Deck to hand on Link Summon
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
@@ -61,11 +61,11 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
     Duel.RegisterEffect(e1,tp)
 end
 function s.splimit(e,c)
-    return not c:IsSetCard(0x199)
+    return not c:IsSetCard(0x1990)
 end
 --Destruction replacement
 function s.repfilter(c,tp)
-    return c:IsFaceup() and c:IsControler(tp) and c:IsOnField() and c:IsSetCard(0x199) and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT+REASON_BATTLE)
+    return c:IsFaceup() and c:IsControler(tp) and c:IsOnField() and c:IsSetCard(0x1990) and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT+REASON_BATTLE)
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetFlagEffect(tp,id)==0 and e:GetHandler():IsAbleToRemove() and eg:IsExists(s.repfilter,1,nil,tp) end

@@ -22,7 +22,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then
         return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.GetLocationCount(1-tp,LOCATION_MZONE)>0 
         and Duel.IsPlayerCanSpecialSummonCount(tp,2) 
-        and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER)
+        and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER)
         and Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0,TYPES_TOKEN,2000,3000,8,RACE_AQUA,ATTRIBUTE_WATER,POS_FACEUP_DEFENSE,1-tp)
     end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
@@ -30,7 +30,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) or not Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0,TYPES_TOKEN,2000,3000,8,RACE_AQUA,ATTRIBUTE_WATER,POS_FACEUP_DEFENSE,1-tp) then return end
+    if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or Duel.GetLocationCount(1-tp,LOCATION_MZONE)<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,0,0,1,RACE_AQUA,ATTRIBUTE_WATER) or not Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,0,TYPES_TOKEN,2000,3000,8,RACE_AQUA,ATTRIBUTE_WATER,POS_FACEUP_DEFENSE,1-tp) then return end
     c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()

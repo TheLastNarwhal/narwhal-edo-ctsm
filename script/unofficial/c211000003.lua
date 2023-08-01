@@ -28,7 +28,7 @@ function s.initial_effect(c)
 end
 --Copy opponent's monster
 function s.filter(c,e,tp)
-    return c:IsFaceup() and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,c:GetTextAttack(),c:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER)
+    return c:IsFaceup() and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,c:GetTextAttack(),c:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc,e,tp) end
@@ -42,7 +42,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     local c=e:GetHandler()
     if not c:IsRelateToEffect(e) or not tc or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
-    if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x199,0x21,tc:GetTextAttack(),tc:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER) then return end
+    if not Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x1990,0x21,tc:GetTextAttack(),tc:GetTextDefense(),1,RACE_AQUA,ATTRIBUTE_WATER) then return end
     c:AddMonsterAttribute(TYPE_EFFECT+TYPE_SPELL)
     if Duel.SpecialSummonStep(c,0,tp,tp,true,false,POS_FACEUP) then
         c:AddMonsterAttributeComplete()

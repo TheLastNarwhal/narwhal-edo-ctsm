@@ -19,14 +19,14 @@ function s.initial_effect(c)
     e2:SetCountLimit(1,id)
     c:RegisterEffect(e2)
 end
-s.listed_series={0x199}
+s.listed_series={0x1990}
 --Activate 1 "Sakashima" Normal Spell from GY on opponent's Special Summon
 function s.recurcon(e,tp,eg,ep,ev,re,r,rp)
     return not eg:IsContains(e:GetHandler()) and eg:IsExists(aux.NOT(Card.IsSummonPlayer),1,nil,tp)
 end
 function s.filter(c,e,tp,eg,ep,ev,re,r,rp)
     local te=c:CheckActivateEffect(false,false,false)
-    return c:IsType(TYPE_SPELL) and not c:IsType(TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD+TYPE_QUICKPLAY) and c:IsSetCard(0x199) and te
+    return c:IsType(TYPE_SPELL) and not c:IsType(TYPE_EQUIP+TYPE_CONTINUOUS+TYPE_FIELD+TYPE_QUICKPLAY) and c:IsSetCard(0x1990) and te
 end
 function s.recurtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return false end

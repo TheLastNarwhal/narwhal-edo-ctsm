@@ -29,13 +29,13 @@ function s.initial_effect(c)
     e3:SetOperation(s.spop)
     c:RegisterEffect(e3)
 end
-s.listed_series={0x199}
+s.listed_series={0x1990}
 --"Sakashima" Normal Spells become QuickPlay
 function s.spellfilter(e,c)
-    return c:IsType(TYPE_SPELL) and not c:IsType(TYPE_FIELD+TYPE_CONTINUOUS+TYPE_QUICKPLAY) and c:IsSetCard(0x199)
+    return c:IsType(TYPE_SPELL) and not c:IsType(TYPE_FIELD+TYPE_CONTINUOUS+TYPE_QUICKPLAY) and c:IsSetCard(0x1990)
 end
 function s.spellfilter2(c)
-    return c:IsType(TYPE_SPELL) and c:IsSetCard(0x199)
+    return c:IsType(TYPE_SPELL) and c:IsSetCard(0x1990)
 end
 --Link Summon 1 Link monster during opponent's Main Phase
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
